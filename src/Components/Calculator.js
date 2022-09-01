@@ -10,8 +10,8 @@ const displayInput = function (e) {
 //  A function to get the input field expression
 const getExpression = function () {
   const expression = document.getElementById("input").value;
-  const answer = eval(expression);
-  document.getElementById("input").value = answer;
+  const result = Function("return " + expression)(); 
+  document.getElementById("input").value = result;
 };
 
 //  A function to clear the input field 
