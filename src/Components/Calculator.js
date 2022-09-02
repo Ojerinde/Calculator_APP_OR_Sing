@@ -1,46 +1,39 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import classes from "./Calculator.module.css";
 
-// A function to display the clicked number in the input field
-const displayInput = function (e) {
-  document.getElementById("input").value += e.target.value;
-};
-
-//  A function to get the input field expression
-const getExpression = function () {
-  const expression = document.getElementById("input").value;
-  const result = Function("return " + expression)(); 
-  document.getElementById("input").value = result;
-};
-
-//  A function to clear the input field 
-const clearInput = function (e) {
-  document.getElementById("input").value = " ";
-};
 
 // Conmponent
 const Calculator = () => {
+  const [expression, setExpression] = useState("");
+
   // Numbers and operators onClick handlers
   const clickHandler = (e) => {
-    displayInput(e);
+    setExpression((prev) => {
+      if (prev.trim().length > 0) return (prev += e.target.value);
+      else return e.target.value;
+    });
   };
 
   // Assignment operator handler
   const submitHandler = () => {
-    if(document.getElementById("input").value.trim().length === 0) return alert`Enter a number`
-    getExpression();
+    const result = eval(expression)
+    setExpression(result)
   };
 
   // Clear field handler
   const clearHandler = () => {
-    clearInput();
+    setExpression('')
   };
 
   return (
     <div className={classes.calculator_box}>
       <div className={classes.calculator_display}>
-        <input id="input" type="text" className={classes.input} />
+        <input
+          defaultValue={expression}
+          type="text"
+          className={classes.input}
+        />
       </div>
       <div className={classes.calculator_row}>
         <Button onClick={clickHandler} value="7" />
@@ -62,8 +55,8 @@ const Calculator = () => {
       </div>
       <div className={classes.calculator_row}>
         <Button onClick={clickHandler} value="0" />
-        <Button onClick={clickHandler}  value="*" />
-        <Button onClick={clickHandler}  value="/" />
+        <Button onClick={clickHandler} value="*" />
+        <Button onClick={clickHandler} value="/" />
         <Button onClick={submitHandler} className={classes.button} value="=" />
       </div>
     </div>
