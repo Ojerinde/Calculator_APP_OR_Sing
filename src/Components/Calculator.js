@@ -17,7 +17,7 @@ const Calculator = () => {
 
   // Assignment operator handler
   const submitHandler = () => {
-    const result = eval(expression)
+    const result = Function("return " + expression)()
     setExpression(result)
   };
 
